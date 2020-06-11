@@ -29,6 +29,9 @@ public class User {
     @Column(name = "last_login_date")
     private Date lastLoginDate;
 
+    @Column(name = "register_date")
+    private Date registerDate;
+
     public User() {
     }
 
@@ -101,6 +104,14 @@ public class User {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 
     @Override

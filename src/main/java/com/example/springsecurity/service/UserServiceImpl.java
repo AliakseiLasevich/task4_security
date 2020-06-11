@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
 
     public User save(UserRegistrationDto registration) {
         User user = new User();
+        user.setRegisterDate(new Date());
         user.setFirstName(registration.getFirstName());
         user.setLastName(registration.getLastName());
         user.setEmail(registration.getEmail());
