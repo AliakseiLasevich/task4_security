@@ -32,6 +32,14 @@ public class User {
     @Column(name = "register_date")
     private Date registerDate;
 
+    @Column(name = "active")
+    private boolean active;
+
+    @PrePersist
+    public void setDefaultActiveValue() {
+        active = true;
+    }
+
     public User() {
     }
 
@@ -112,6 +120,14 @@ public class User {
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

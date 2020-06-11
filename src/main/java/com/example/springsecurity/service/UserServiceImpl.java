@@ -3,6 +3,7 @@ package com.example.springsecurity.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.springsecurity.dto.UserRegistrationDto;
@@ -69,5 +70,10 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
         User user = userRepository.findByEmail(userEmail);
         user.setLastLoginDate(new Date());
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

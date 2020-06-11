@@ -17,8 +17,5 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/users")
-    public String userIndex() {
-        return "users";
-    }
+
 }
