@@ -2,6 +2,7 @@ package com.example.springsecurity.model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -24,6 +25,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
+
+    @Column(name = "last_login_date")
+    private Date lastLoginDate;
 
     public User() {
     }
@@ -89,6 +93,14 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
     }
 
     @Override
