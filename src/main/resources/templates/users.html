@@ -11,37 +11,43 @@
 </head>
 <body>
 
-<table>
-    <thead>
-    <th>select</th>
-    <th>id</th>
-    <th>email</th>
-    <th>first name</th>
-    <th>last name</th>
-    <th>register date</th>
-    <th>last login date</th>
-    <th>active</th>
-    </thead>
-    <tbody>
+<form action="#" th:action="@{/edit}" th:object="${user}" method="post">
 
-    <tr th:each="user : ${users}">
-        <td><input type="checkbox" name="userId" th:value="${user.getId()}"/></td>
-        <td th:text="${user.getId()}">a</td>
-        <td th:text="${user.getEmail()}">a</td>
-        <td th:text="${user.getFirstName()}">a</td>
-        <td th:text="${user.getLastName()}">a</td>
-        <td th:text="${user.getRegisterDate()}">a</td>
-        <td th:text="${user.getLastLoginDate()}">a</td>
-        <td th:text="${user.isActive()}">a</td>
-    </tr>
+    <button type="submit" name="action" value="block">block</button>
+    <button type="submit" name="action" value="unblock">unblock</button>
+    <button type="submit" name="action" value="delete">delete</button>
 
-    </tbody>
-    </th:block>
+    <table>
+        <thead>
+        <th>select</th>
+        <th>id</th>
+        <th>email</th>
+        <th>first name</th>
+        <th>last name</th>
+        <th>register date</th>
+        <th>last login date</th>
+        <th>active</th>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td>
+                <input type="checkbox" name="users" th:value="${user.getId()}"/>
+            </td>
+            <td th:text="${user.getId()}">a</td>
+            <td th:text="${user.getEmail()}">a</td>
+            <td th:text="${user.getFirstName()}">a</td>
+            <td th:text="${user.getLastName()}">a</td>
+            <td th:text="${user.getRegisterDate()}">a</td>
+            <td th:text="${user.getLastLoginDate()}">a</td>
+            <td th:text="${user.isActive()}">a</td>
+        </tr>
+        </tbody>
+        </th:block>
 
-</table>
-select all:
-<input type="checkbox" name="userId" onclick="selectAllUsers(this)"/>
-
+    </table>
+    select all:
+    <input type="checkbox" name="userId" onclick="selectAllUsers(this)"/>
+</form>
 <script src="js/script.js"></script>
 </body>
 </html>

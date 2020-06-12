@@ -13,4 +13,10 @@ public interface UserService extends UserDetailsService {
     User save(UserRegistrationDto registration);
 
     List<User> findAll();
+
+    void block(List<Integer> users);
+
+    void unblock(List<Integer> users);
+
+    void delete(List<Integer> users);
 }

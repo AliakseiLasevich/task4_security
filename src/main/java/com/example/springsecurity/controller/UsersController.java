@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -18,10 +20,26 @@ public class UsersController {
 
     @GetMapping("/users")
     public String userIndex(Model model) {
-
         List<User> users = userService.findAll();
-
         model.addAttribute("users", users);
         return "users";
+    }
+
+    @PostMapping(value = "/edit", params = "action=block")
+    public String block(@RequestParam(value = "users", required = false) Integer[] users) {
+        userService.block(Arrays.asList(users));
+        return "redirect:/users";
+    }
+
+    @PostMapping(value = "/edit", params = "action=unblock")
+    public String unblock(@RequestParam(value = "users", required = false) Integer[] users)  {
+        userService.unblock(Arrays.asList(users));
+        return "redirect:/users";
+    }
+
+    @PostMapping(value = "/edit", params = "action=delete")
+    public String delete(@RequestParam(value = "users", required = false) Integer[] users) {
+        userService.delete(Arrays.asList(users));
+        return "redirect:/users";
     }
 }

@@ -1,6 +1,7 @@
 package com.example.springsecurity.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,10 +28,10 @@ public class User {
     private Collection<Role> roles;
 
     @Column(name = "last_login_date")
-    private Date lastLoginDate;
+    private LocalDate lastLoginDate;
 
     @Column(name = "register_date")
-    private Date registerDate;
+    private LocalDate registerDate;
 
     @Column(name = "active")
     private boolean active;
@@ -106,19 +107,19 @@ public class User {
         this.roles = roles;
     }
 
-    public Date getLastLoginDate() {
+    public LocalDate getLastLoginDate() {
         return lastLoginDate;
     }
 
-    public void setLastLoginDate(Date lastLoginDate) {
+    public void setLastLoginDate(LocalDate lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public Date getRegisterDate() {
+    public LocalDate getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(LocalDate registerDate) {
         this.registerDate = registerDate;
     }
 

@@ -1,8 +1,8 @@
 package com.example.springsecurity.service;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
 
     public User save(UserRegistrationDto registration) {
         User user = new User();
-        user.setRegisterDate(new Date());
+        user.setRegisterDate(LocalDate.now());
         user.setFirstName(registration.getFirstName());
         user.setLastName(registration.getLastName());
         user.setEmail(registration.getEmail());
@@ -66,14 +66,37 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     public void onApplicationEvent(AuthenticationSuccessEvent event) {
         String userEmail = ((UserDetails) event.getAuthentication().
                 getPrincipal()).getUsername();
-
         User user = userRepository.findByEmail(userEmail);
-        user.setLastLoginDate(new Date());
+        user.setLastLoginDate(LocalDate.now());
         userRepository.save(user);
     }
 
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void block(List<Integer> users) {
+        users.stream()
+                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .peek(user -> user.setActive(false))
+                .forEach(user -> userRepository.save(user));
+    }
+
+    @Override
+    public void unblock(List<Integer> users) {
+        users.stream()
+                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .peek(user -> user.setActive(true))
+                .forEach(user -> userRepository.save(user));
+    }
+
+    @Override
+    public void delete(List<Integer> users) {
+        users.stream()
+                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .peek(user -> user.setActive(true))
+                .forEach(user -> userRepository.delete(user));
     }
 }
