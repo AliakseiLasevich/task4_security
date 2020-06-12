@@ -6,48 +6,76 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
 
     <title>Users </title>
 </head>
 <body>
 
-<form action="#" th:action="@{/edit}" th:object="${user}" method="post">
+<nav class="navbar navbar-dark bg-dark">
+    <!--    <div class="container">-->
+    <!--        <div class="navbar-header">-->
+    <a class="navbar-brand" href="#" th:href="@{/}">Users management application</a>
+    <a class="nav-link active" sec:authorize="isAuthenticated()"> <a th:href="@{/logout}">
+        <button class="btn btn-sm btn-outline-secondary" type="button">Logout</button>
+    </a></a>
+    <!--            <a class="nav-link active" sec:authorize="isAuthenticated()">   <a th:href="@{/logout}">  <button class="btn btn-sm btn-outline-secondary" type="button">Logout</button></a></a>-->
 
-    <button type="submit" name="action" value="block">block</button>
-    <button type="submit" name="action" value="unblock">unblock</button>
-    <button type="submit" name="action" value="delete">delete</button>
+    <!--        </div>-->
+    <!--</div>-->
+</nav>
 
-    <table>
-        <thead>
-        <th>select</th>
-        <th>id</th>
-        <th>email</th>
-        <th>first name</th>
-        <th>last name</th>
-        <th>register date</th>
-        <th>last login date</th>
-        <th>active</th>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users}">
-            <td>
-                <input type="checkbox" name="users" th:value="${user.getId()}"/>
-            </td>
-            <td th:text="${user.getId()}">a</td>
-            <td th:text="${user.getEmail()}">a</td>
-            <td th:text="${user.getFirstName()}">a</td>
-            <td th:text="${user.getLastName()}">a</td>
-            <td th:text="${user.getRegisterDate()}">a</td>
-            <td th:text="${user.getLastLoginDate()}">a</td>
-            <td th:text="${user.isActive()}">a</td>
-        </tr>
-        </tbody>
-        </th:block>
 
-    </table>
-    select all:
-    <input type="checkbox" name="userId" onclick="selectAllUsers(this)"/>
-</form>
-<script src="js/script.js"></script>
+<br>
+
+<br><br>
+
+<div class="container">
+    <form action="#" th:action="@{/edit}" method="post">
+
+        <button type="submit" name="action" value="block" class="btn btn-warning">block</button>
+        <button type="submit" name="action" value="unblock" class="btn btn-success">unblock</button>
+        <button type="submit" name="action" value="delete" class="btn btn-danger">delete</button>
+
+        <table class="table">
+            <thead class="thead-dark">
+            <th scope="col">select</th>
+            <th scope="col">id</th>
+            <th scope="col">email</th>
+            <th scope="col">first name</th>
+            <th scope="col">last name</th>
+            <th scope="col">register date</th>
+            <th scope="col">last login date</th>
+            <th scope="col">active</th>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td>
+                    <input type="checkbox" name="users" th:value="${user.getId()}"/>
+                </td>
+                <td th:text="${user.getId()}">a</td>
+                <td th:text="${user.getEmail()}">a</td>
+                <td th:text="${user.getFirstName()}">a</td>
+                <td th:text="${user.getLastName()}">a</td>
+                <td th:text="${user.getRegisterDate()}">a</td>
+                <td th:text="${user.getLastLoginDate()}">a</td>
+                <td th:text="${user.isActive()}">a</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="userId" onclick="selectAllUsers(this)"/> select all</td>
+            </tr>
+            </tbody>
+            </th:block>
+
+        </table>
+
+
+    </form>
+    <script src="js/script.js"></script>
+</div>
+
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

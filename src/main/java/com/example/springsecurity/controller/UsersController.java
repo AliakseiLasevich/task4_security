@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ public class UsersController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/")
     public String userIndex(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
@@ -27,19 +28,20 @@ public class UsersController {
 
     @PostMapping(value = "/edit", params = "action=block")
     public String block(@RequestParam(value = "users", required = false) Integer[] users) {
+        System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
         userService.block(Arrays.asList(users));
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @PostMapping(value = "/edit", params = "action=unblock")
     public String unblock(@RequestParam(value = "users", required = false) Integer[] users)  {
         userService.unblock(Arrays.asList(users));
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @PostMapping(value = "/edit", params = "action=delete")
     public String delete(@RequestParam(value = "users", required = false) Integer[] users) {
         userService.delete(Arrays.asList(users));
-        return "redirect:/users";
+        return "redirect:/";
     }
 }
