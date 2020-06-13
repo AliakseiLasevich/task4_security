@@ -14,9 +14,9 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAll();
 
-    void block(List<Integer> users);
+    void block(List<String> users);
 
-    void unblock(List<Integer> users);
+    void unblock(List<String> users);
 
-    void delete(List<Integer> users);
+    void delete(List<String> users);
 }

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,20 +26,19 @@ public class UsersController {
     }
 
     @PostMapping(value = "/edit", params = "action=block")
-    public String block(@RequestParam(value = "users", required = false) Integer[] users) {
-        System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
+    public String block(@RequestParam(value = "users", required = false) String[] users) {
         userService.block(Arrays.asList(users));
         return "redirect:/";
     }
 
     @PostMapping(value = "/edit", params = "action=unblock")
-    public String unblock(@RequestParam(value = "users", required = false) Integer[] users)  {
+    public String unblock(@RequestParam(value = "users", required = false) String[] users)  {
         userService.unblock(Arrays.asList(users));
         return "redirect:/";
     }
 
     @PostMapping(value = "/edit", params = "action=delete")
-    public String delete(@RequestParam(value = "users", required = false) Integer[] users) {
+    public String delete(@RequestParam(value = "users", required = false) String[] users) {
         userService.delete(Arrays.asList(users));
         return "redirect:/";
     }

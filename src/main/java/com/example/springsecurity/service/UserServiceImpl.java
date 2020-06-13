@@ -1,25 +1,26 @@
 package com.example.springsecurity.service;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.example.springsecurity.dto.UserRegistrationDto;
+import com.example.springsecurity.model.Role;
+import com.example.springsecurity.model.User;
+import com.example.springsecurity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.springsecurity.model.Role;
-import com.example.springsecurity.model.User;
-import com.example.springsecurity.repository.UserRepository;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService, ApplicationListener<AuthenticationSuccessEvent> {
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SessionService sessionService;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -77,26 +81,31 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     }
 
     @Override
-    public void block(List<Integer> users) {
+    public void block(List<String> users) {
+        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+        List<Object> objs = sessionRegistry.getAllPrincipals();
         users.stream()
-                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .map(userEmail -> userRepository.findByEmail(userEmail))
                 .peek(user -> user.setActive(false))
+                .peek(user -> sessionService.expireUserSessions(user.getEmail()))
                 .forEach(user -> userRepository.save(user));
     }
 
     @Override
-    public void unblock(List<Integer> users) {
+    public void unblock(List<String> users) {
         users.stream()
-                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .map(userEmail -> userRepository.findByEmail(userEmail))
                 .peek(user -> user.setActive(true))
+                .peek(user -> sessionService.expireUserSessions(user.getEmail()))
                 .forEach(user -> userRepository.save(user));
     }
 
     @Override
-    public void delete(List<Integer> users) {
+    public void delete(List<String> users) {
         users.stream()
-                .map(userId -> userRepository.findById((long) userId).orElseThrow(RuntimeException::new))
+                .map(userEmail -> userRepository.findByEmail(userEmail))
                 .peek(user -> user.setActive(true))
+                .peek(user -> sessionService.expireUserSessions(user.getEmail()))
                 .forEach(user -> userRepository.delete(user));
     }
 }

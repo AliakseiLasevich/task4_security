@@ -3,7 +3,6 @@ package com.example.springsecurity.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))

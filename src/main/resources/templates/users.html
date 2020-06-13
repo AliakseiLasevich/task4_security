@@ -14,16 +14,10 @@
 <body>
 
 <nav class="navbar navbar-dark bg-dark">
-    <!--    <div class="container">-->
-    <!--        <div class="navbar-header">-->
     <a class="navbar-brand" href="#" th:href="@{/}">Users management application</a>
     <a class="nav-link active" sec:authorize="isAuthenticated()"> <a th:href="@{/logout}">
         <button class="btn btn-sm btn-outline-secondary" type="button">Logout</button>
     </a></a>
-    <!--            <a class="nav-link active" sec:authorize="isAuthenticated()">   <a th:href="@{/logout}">  <button class="btn btn-sm btn-outline-secondary" type="button">Logout</button></a></a>-->
-
-    <!--        </div>-->
-    <!--</div>-->
 </nav>
 
 
@@ -52,7 +46,7 @@
             <tbody>
             <tr th:each="user : ${users}">
                 <td>
-                    <input type="checkbox" name="users" th:value="${user.getId()}"/>
+                    <input type="checkbox" name="users" th:value="${user.getEmail()}"/>
                 </td>
                 <td th:text="${user.getId()}">a</td>
                 <td th:text="${user.getEmail()}">a</td>
