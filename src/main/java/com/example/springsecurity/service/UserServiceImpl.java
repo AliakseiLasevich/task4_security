@@ -96,7 +96,6 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
         users.stream()
                 .map(userEmail -> userRepository.findByEmail(userEmail))
                 .peek(user -> user.setActive(true))
-                .peek(user -> sessionService.expireUserSessions(user.getEmail()))
                 .forEach(user -> userRepository.save(user));
     }
 
