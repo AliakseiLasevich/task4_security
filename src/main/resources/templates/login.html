@@ -29,9 +29,10 @@
 			<div class="col-md-6 col-md-offset-3">
 				<h1>Login page</h1>
 				<form th:action="@{/login}" method="post">
+
 					<div th:if="${param.error}">
 						<div class="alert alert-danger">Invalid username or
-							password.</div>
+							password. </div>
 					</div>
 					<div th:if="${param.logout}">
 						<div class="alert alert-info">You have been logged out.</div>
@@ -65,8 +66,7 @@
 
 	</div>
 
-	<script type="text/javascript"
-			th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+
 
 </body>
 </html>

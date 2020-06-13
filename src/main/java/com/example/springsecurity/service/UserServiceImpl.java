@@ -6,11 +6,10 @@ import com.example.springsecurity.model.User;
 import com.example.springsecurity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +32,7 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
 
     @Autowired
     private SessionService sessionService;
+    private Object GrantedAuthority;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -55,8 +55,10 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(),
+        if (!user.isActive()) {
+            throw new LockedException("Account is locked.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
     }
 
@@ -82,8 +84,6 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
 
     @Override
     public void block(List<String> users) {
-        SessionRegistry sessionRegistry = new SessionRegistryImpl();
-        List<Object> objs = sessionRegistry.getAllPrincipals();
         users.stream()
                 .map(userEmail -> userRepository.findByEmail(userEmail))
                 .peek(user -> user.setActive(false))
@@ -103,8 +103,9 @@ public class UserServiceImpl implements UserService, ApplicationListener<Authent
     public void delete(List<String> users) {
         users.stream()
                 .map(userEmail -> userRepository.findByEmail(userEmail))
-                .peek(user -> user.setActive(true))
                 .peek(user -> sessionService.expireUserSessions(user.getEmail()))
                 .forEach(user -> userRepository.delete(user));
     }
+
+
 }
