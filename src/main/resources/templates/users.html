@@ -34,7 +34,7 @@
 
         <table class="table">
             <thead class="thead-dark">
-            <th scope="col">select</th>
+            <th scope="col"><input type="checkbox" name="userId" onclick="selectAllUsers(this)"/><span style="padding-left: 10px">select all</span></th>
             <th scope="col">id</th>
             <th scope="col">email</th>
             <th scope="col">first name</th>
@@ -56,9 +56,7 @@
                 <td th:text="${user.getLastLoginDate()}">a</td>
                 <td th:text="${user.isActive()}">a</td>
             </tr>
-            <tr>
-                <td><input type="checkbox" name="userId" onclick="selectAllUsers(this)"/> select all</td>
-            </tr>
+
             </tbody>
             </th:block>
 
